@@ -40,6 +40,21 @@ jobs:
         working-directory: tools/diagnostics-broker
         run: python3 -m unittest discover -s tests -p 'test_*.py' -v
 
+  visual-evidence-tests:
+    name: Visual evidence tests
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Setup Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.10"
+      - name: Install visual evidence dependencies
+        run: python3 -m pip install -r tools/visual-evidence/requirements.txt
+      - name: Run visual evidence tests
+        run: python3 -m unittest discover -s tools/visual-evidence/tests -p 'test_*.py' -v
+
   unity-tests:
     name: Unity compile and tests
     if: ${{ vars.UNITY_CI_ENABLED == 'true' }}
