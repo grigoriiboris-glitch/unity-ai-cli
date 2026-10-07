@@ -107,7 +107,7 @@ class DiagnosticsBrokerTests(unittest.TestCase):
         task1 = broker.new_task_id()
         task2 = broker.new_task_id()
         self.assertRegex(task1, r"^TASK-\d{8}-\d{3}$")
-        self.assertRegex(task2, r"^TASK-\\d{8}-\\d{3}$")
+        self.assertRegex(task2, r"^TASK-\d{8}-\d{3}$")
         self.assertEqual(int(task2[-3:]), int(task1[-3:]) + 1)
 
 
