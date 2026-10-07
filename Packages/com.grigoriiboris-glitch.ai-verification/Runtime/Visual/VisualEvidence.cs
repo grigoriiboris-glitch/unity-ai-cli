@@ -17,6 +17,6 @@ namespace UnityAI.Verification
         public string RunId;
         public string CreatedAtUtc;
 
-        [NonSerialized] public Texture2D Texture;
+        public int EncodedByteCount;\n\n        [NonSerialized] public Texture2D Texture;\n        [NonSerialized] public byte[] PngData;
     }
 }
