@@ -34,7 +34,7 @@ namespace UnityAI.Verification.Tests
             Physics.SyncTransforms();
             yield return new WaitForFixedUpdate();
 
-            var monitor = new TemporalMonitor("Player", "Player");
+            var monitor = new TemporalMonitor("Player", "Player", new TemporalMonitorPolicy { FallDistanceThreshold = 0.1f });
             monitor.AddSample(new TemporalSample(
                 Time.time,
                 player.transform.position,
@@ -45,7 +45,7 @@ namespace UnityAI.Verification.Tests
                 false));
 
             Physics.IgnoreLayerCollision(9, 8, true);
-            for (var i = 0; i < 3; i++)
+            for (var i = 0; i < 15; i++)
                 yield return new WaitForFixedUpdate();
 
             monitor.AddSample(new TemporalSample(
