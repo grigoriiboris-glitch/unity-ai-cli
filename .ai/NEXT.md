@@ -1,6 +1,6 @@
 # Next
 
-1. Add Unity PlayMode regression scenarios for P0 runtime anomalies.
-2. Enable full Unity compile/EditMode/PlayMode CI when repository Unity credentials are configured.
-3. Add Game View / Scene View evidence capture and visual diff.
-4. Add Codex/MCP escalation workflows and context recovery.
+1. Enable full Unity EditMode/PlayMode CI by configuring the opt-in repository variable and Unity credentials.
+2. Add Game View / Scene View evidence capture and targeted framing.
+3. Add visual baselines, image diff and selected evidence-frame detection.
+4. Add Codex/MCP escalation workflow and context recovery.
