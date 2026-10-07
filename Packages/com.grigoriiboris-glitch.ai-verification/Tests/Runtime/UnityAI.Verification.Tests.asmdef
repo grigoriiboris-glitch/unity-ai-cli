@@ -2,13 +2,9 @@
   "name": "UnityAI.Verification.Tests",
   "rootNamespace": "UnityAI.Verification.Tests",
   "references": [
-    "UnityAI.Verification",
-    "UnityEngine.TestRunner",
-    "UnityEditor.TestRunner"
+    "UnityAI.Verification"
   ],
-  "includePlatforms": [
-    "Editor"
-  ],
+  "includePlatforms": [],
   "excludePlatforms": [],
   "allowUnsafeCode": false,
   "overrideReferences": true,
