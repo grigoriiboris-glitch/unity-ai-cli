@@ -18,6 +18,8 @@ REQUIRED = [
     "Packages/manifest.json",
     "ProjectSettings/ProjectVersion.txt",
     "Packages/com.grigoriiboris-glitch.ai-verification/package.json",
+    "Packages/com.grigoriiboris-glitch.ai-verification/Runtime/UI/UIBoundsVerifier.cs",
+    "Packages/com.grigoriiboris-glitch.ai-verification/Tests/PlayMode/RuntimeRegressionScenarioTests.cs",
 ]
 
 def fail(message: str) -> None:
