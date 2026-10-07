@@ -37,7 +37,7 @@ namespace UnityAI.Verification.Tests
         public void Capture_RejectsMissingRequest()
         {
             var result = VisualEvidenceCapture.Capture(
-                Camera.main,
+                null,
                 null,
                 "TASK-1",
                 "RUN-1");
