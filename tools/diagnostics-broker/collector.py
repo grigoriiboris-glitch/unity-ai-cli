@@ -110,7 +110,10 @@ class UnityLogCollector:
     @staticmethod
     def _source(stacktrace: str) -> tuple[str, int | None]:
         for line in stacktrace.splitlines():
-            match = re.search(r"(.+?):(\d+)(?::\d+)?$", line.strip())
+            candidate = line.strip()
+            if " in " in candidate:
+                candidate = candidate.rsplit(" in ", 1)[1]
+            match = re.search(r"(.+?):(\d+)(?::\d+)?$", candidate)
             if match:
                 return match.group(1), int(match.group(2))
         return "", None
