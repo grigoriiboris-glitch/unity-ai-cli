@@ -2,23 +2,19 @@
 
 ## Mandatory
 
-Every pull request must pass repository sanity.
-
-The sanity job validates:
-- required Unity project/package files;
-- pinned Unity 6000.3.23f1;
-- pinned Unity Test Framework 1.6.0;
-- runtime package version 0.1.0;
-- repository AI-memory files.
+Every pull request must pass repository sanity and diagnostics broker tests.
 
 ## Unity execution
 
-The full Unity compile/EditMode/PlayMode job is intentionally separate from repository sanity because headless Unity licensing requires repository credentials.
+The Unity job is always present in the workflow but is opt-in:
 
-Planned repository settings:
-- `UNITY_CI_ENABLED=true`
+`UNITY_CI_ENABLED=true`
+
+Repository secrets required when enabled:
 - `UNITY_EMAIL`
 - `UNITY_PASSWORD`
 - `UNITY_SERIAL`
 
-The Unity job is added/enabled only after those credentials exist. The implementation uses pinned GameCI action commits rather than `latest`.
+The job runs Unity 6000.3.23f1 and all EditMode/PlayMode tests through pinned `game-ci/unity-test-runner` v4.4.0.
+
+Without the variable enabled, the Unity job is skipped while repository sanity and Python tests remain mandatory.

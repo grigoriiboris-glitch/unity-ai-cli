@@ -1,11 +1,11 @@
 # Checkpoint
 
-- current task: Milestone 1 Foundation + Runtime Verifier Core
-- status: ready-for-review
-- branch: feat/foundation-runtime-verifier
-- last commit: 847d1e3 foundation slice
-- changed files: foundation, CI, RuntimeVerifier package, EditMode tests
+- current task: Milestone 3 Diagnostics Broker
+- status: in-progress
+- branch: feat/diagnostics-broker
+- last commit: diagnostics broker implementation + tests
+- changed files: tools/diagnostics-broker, CI and repository validator
 - Unity scene: none yet
-- verification state: repository-sanity GREEN; full Unity compile/test job is the next CI enablement slice and requires repository Unity credentials
+- verification state: awaiting diagnostics Python CI
 - open diagnostics: none
-- next steps: regression scenes, diagnostics broker, visual evidence
+- next steps: Unity PlayMode regression scenarios, then visual evidence

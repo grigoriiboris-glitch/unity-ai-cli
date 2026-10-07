@@ -18,6 +18,10 @@ REQUIRED = [
     "Packages/manifest.json",
     "ProjectSettings/ProjectVersion.txt",
     "Packages/com.grigoriiboris-glitch.ai-verification/package.json",
+    "tools/diagnostics-broker/broker.py",
+    "tools/diagnostics-broker/cli.py",
+    "tools/diagnostics-broker/collector.py",
+    "tools/diagnostics-broker/tests/test_broker.py",
 ]
 
 def fail(message: str) -> None:
