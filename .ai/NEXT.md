@@ -1,6 +1,7 @@
 # Next
 
-1. Enable full Unity EditMode/PlayMode CI by configuring the opt-in repository variable and Unity credentials.
-2. Add Game View / Scene View evidence capture and targeted framing.
-3. Add visual baselines, image diff and selected evidence-frame detection.
-4. Add Codex/MCP escalation workflow and context recovery.
+1. Configure UNITY_CI_ENABLED=true and Unity credentials so compile/EditMode/PlayMode execute in GitHub Actions.
+2. Implement Unity Editor Game View / Scene View capture adapter using the existing bounded Visual Evidence API.
+3. Persist evidence artifacts under .ai/artifacts/<task_id>/ and return artifact IDs only to AI-facing APIs.
+4. Add visual escalation policy: semantic/runtime -> one screenshot -> Game+Scene -> selected temporal frames.
+5. Add Codex/MCP integration and context recovery from CHECKPOINT + Git.
