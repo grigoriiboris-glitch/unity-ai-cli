@@ -93,7 +93,7 @@ class DiagnosticsBrokerTests(unittest.TestCase):
                 DiagnosticEvent(
                     severity="error",
                     category="exception",
-                    message=f"Different failure {index}",
+                    message=f"Different failure token-{chr(65 + index // 26)}{chr(65 + index % 26)}",
                     exception_type="Exception",
                 )
             )
