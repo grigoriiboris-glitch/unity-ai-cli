@@ -22,15 +22,30 @@ def compare(baseline_path: Path, current_path: Path, threshold: int):
 
     pixels = baseline.width * baseline.height
     changed = 0
+    mask = []
+    for y in range(baseline.height):
+        row = []
+        for x in range(baseline.width):
+            row.append(max(diff.getpixel((x, y))) >= threshold)
+        mask.append(row)
+
+    regions = 0
+    for y in range(baseline.height):
+        for x in range(baseline.width):
+            if not mask[y][x]:
+                continue
+            regions += 1
+            stack = [(x, y)]
+            mask[y][x] = False
+            while stack:
+                cx, cy = stack.pop()
+                changed += 1
+                for nx, ny in ((cx - 1, cy), (cx + 1, cy), (cx, cy - 1), (cx, cy + 1)):
+                    if 0 <= nx < baseline.width and 0 <= ny < baseline.height and mask[ny][nx]:
+                        mask[ny][nx] = False
+                        stack.append((nx, ny))
+
     bbox = diff.getbbox()
-
-    if bbox:
-        changed = sum(
-            1
-            for pixel in diff.getdata()
-            if max(pixel) >= threshold
-        )
-
     diff_percent = (changed / pixels * 100.0) if pixels else 0.0
     mean_delta = sum(stat.mean) / 3.0
 
@@ -48,7 +63,7 @@ def compare(baseline_path: Path, current_path: Path, threshold: int):
         "height": baseline.height,
         "diff_percent": round(diff_percent, 3),
         "mean_delta": round(mean_delta, 3),
-        "changed_regions": 1 if bbox else 0,
+        "changed_regions": regions,
         "severity": severity,
         "changed_bbox": list(bbox) if bbox else None,
     }
