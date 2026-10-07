@@ -1,11 +1,11 @@
 # Checkpoint
 
-- current task: Milestone 2 Runtime Verifier regression scenarios
+- current task: Milestone 4/5 Visual Evidence
 - status: in-progress
-- branch: feat/runtime-regression-v2
-- last commit: P0 regression scenarios
-- changed files: UIBoundsVerifier, PlayMode regression tests, repository contract
-- Unity scene: generated per PlayMode scenario
-- verification state: repository sanity pending; Unity PlayMode run awaits opt-in CI credentials
+- branch: main
+- last commit: c3953a8 visual evidence frame selection
+- changed files: Runtime/Visual, tools/visual-evidence, CI visual-evidence job
+- Unity scene: capture abstraction is camera-based; Editor Game View/Scene View adapter remains
+- verification state: repository/diagnostics/visual Python tests are covered by CI; Unity tests await opt-in credentials
 - open diagnostics: none
-- next steps: visual evidence layer
+- next steps: implement Unity Editor Game View/Scene View capture adapter and artifact persistence; then Codex/MCP escalation
