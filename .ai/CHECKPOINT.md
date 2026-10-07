@@ -1,11 +1,11 @@
 # Checkpoint
 
-- current task: Milestone 3 Diagnostics Broker
+- current task: Milestone 2 Runtime Verifier regression scenarios
 - status: in-progress
-- branch: feat/diagnostics-broker
-- last commit: diagnostics broker implementation + tests
-- changed files: tools/diagnostics-broker, CI and repository validator
-- Unity scene: none yet
-- verification state: awaiting diagnostics Python CI
+- branch: feat/runtime-regression-v2
+- last commit: P0 regression scenarios
+- changed files: UIBoundsVerifier, PlayMode regression tests, repository contract
+- Unity scene: generated per PlayMode scenario
+- verification state: repository sanity pending; Unity PlayMode run awaits opt-in CI credentials
 - open diagnostics: none
-- next steps: Unity PlayMode regression scenarios, then visual evidence
+- next steps: visual evidence layer
