@@ -481,6 +481,7 @@ class DiagnosticsBroker:
             "status": "truncated",
             "count": 0,
             "has_more": bool(value.get("count")),
+            "truncated": True,
             "diagnostics": [],
         }
 
