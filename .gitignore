@@ -18,12 +18,15 @@ Recordings/
 *.user
 *.userprefs
 
-# Python
-__pycache__/
-*.py[cod]
-.venv/
-.pytest_cache/
+# Node.js
+node_modules/
+.npm/
+*.tsbuildinfo
 
-# Local runtime artifacts
+# Local Unity AI runtime artifacts (keep source/checkpoint history in Git)
 .ai/artifacts/
 .ai/diagnostics/raw/
+.ai/diagnostics/*.sqlite3
+.ai/diagnostics/*.sqlite3-shm
+.ai/diagnostics/*.sqlite3-wal
+.ai/checkpoints/
