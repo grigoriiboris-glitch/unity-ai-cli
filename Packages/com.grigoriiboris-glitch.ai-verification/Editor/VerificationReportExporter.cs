@@ -239,15 +239,19 @@ namespace UnityAI.Verification.Editor
                     if (!Application.isPlaying)
                         continue;
                     uiTargets++;
+                    var canvas = rectTransform.GetComponentInParent<Canvas>();
+                    var uiCamera = canvas != null && canvas.renderMode == RenderMode.ScreenSpaceOverlay
+                        ? null
+                        : canvas != null && canvas.worldCamera != null ? canvas.worldCamera : camera;
                     Merge(report.anomalies, UIBoundsVerifier.Verify(
                         rectTransform,
-                        camera,
+                        uiCamera,
                         new UIBoundsVerificationPolicy { Enabled = true, Margin = 0f },
                         taskId,
                         runId));
                 }
 
-                    if (camera != null)
+                if (camera != null)
                 {
                     visibilityTargets++;
                     Merge(report.anomalies, VisibilityVerifier.Verify(
