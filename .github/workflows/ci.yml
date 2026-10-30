@@ -19,41 +19,33 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - name: Setup Python
-        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+      - name: Setup Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
-          python-version: "3.10"
+          node-version: "24.15.0"
       - name: Validate repository contract
-        run: python3 tools/validate_repo.py
+        working-directory: packages/cli
+        run: node ./src/commands/validate-repo.mjs
 
-  diagnostics-broker-tests:
-    name: Diagnostics broker tests
+  node-cli-tests:
+    name: Node.js CLI regression tests
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - name: Setup Python
-        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+      - name: Setup Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
-          python-version: "3.10"
-      - name: Run diagnostics broker regression tests
-        working-directory: tools/diagnostics-broker
-        run: python3 -m unittest discover -s tests -p 'test_*.py' -v
-
-  visual-evidence-tests:
-    name: Visual evidence tests
-    runs-on: ubuntu-22.04
-    steps:
-      - name: Checkout
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - name: Setup Python
-        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
-        with:
-          python-version: "3.10"
-      - name: Install visual evidence dependencies
-        run: python3 -m pip install -r tools/visual-evidence/requirements.txt
-      - name: Run visual evidence tests
-        run: python3 -m unittest discover -s tools/visual-evidence/tests -p 'test_*.py' -v
+          node-version: "24.15.0"
+      - name: Install CLI dependencies
+        working-directory: packages/cli
+        run: npm install --no-audit --no-fund
+      - name: Check JavaScript syntax
+        working-directory: packages/cli
+        run: npm run lint
+      - name: Run CLI regression tests
+        working-directory: packages/cli
+        run: npm test
 
   unity-tests:
     name: Unity compile and tests
