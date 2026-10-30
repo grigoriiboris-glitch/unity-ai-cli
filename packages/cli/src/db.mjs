@@ -29,8 +29,10 @@ export function normalizeMessage(message = "") {
 
 export function extractSource(message = "", stacktrace = "") {
   for (const source of [message, stacktrace]) {
-    for (const line of String(source).split(/\r?\n/)) {
-      const match = PATH_LINE_RE.exec(line.trim());
+    for (const rawLine of String(source).split(/\r?\n/)) {
+      let candidate = rawLine.trim();
+      if (candidate.includes(" in ")) candidate = candidate.slice(candidate.lastIndexOf(" in ") + 4).trim();
+      const match = PATH_LINE_RE.exec(candidate);
       if (match) return { file: match[1], line: Number(match[2]) };
     }
   }
@@ -41,7 +43,9 @@ export function findTopUserFrame(stacktrace = "") {
   const ignored = ["UnityEngine.", "UnityEditor.", "System.", "Microsoft.", "Mono.", "mscorlib"];
   for (const rawLine of String(stacktrace).split(/\r?\n/)) {
     const match = FRAME_RE.exec(rawLine);
-    const frame = (match?.[1] ?? rawLine.trim()).trim();
+    let frame = (match?.[1] ?? rawLine.trim()).trim();
+    if (frame.includes(" in ")) frame = frame.slice(0, frame.lastIndexOf(" in ")).trim();
+    frame = frame.replace(/\s*\([^)]*\)$/, "").trim();
     if (frame && !ignored.some((prefix) => frame.startsWith(prefix))) return frame;
   }
   return "";
@@ -54,7 +58,7 @@ export function fingerprintFor(event) {
   const topFrame = event.top_user_frame || findTopUserFrame(event.stacktrace);
   const normalizedStack = String(event.stacktrace || "")
     .split(/\r?\n/)
-    .map((line) => line.trim().replace(/\s+/g, " "))
+    .map((part) => part.trim().replace(/\s+/g, " "))
     .filter(Boolean)
     .join("\n");
   const payload = [
