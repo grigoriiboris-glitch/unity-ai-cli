@@ -1,4 +1,4 @@
-import { access, readFile } from "node:fs/promises";
+import { access, readFile, readdir } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -16,6 +16,9 @@ const required = [
   ".agents/skills/unity-fix-compile-errors/SKILL.md",
   ".agents/skills/unity-visual-qa/SKILL.md",
   ".github/workflows/ci.yml",
+  "docs/ARCHITECTURE.md",
+  "docs/CI.md",
+  "docs/COPLAY-MCP.md",
   "Packages/manifest.json",
   "ProjectSettings/ProjectVersion.txt",
   "Packages/com.grigoriiboris-glitch.ai-verification/package.json",
@@ -27,7 +30,13 @@ const required = [
   "packages/cli/src/logs.mjs",
   "packages/cli/src/visual-diff.mjs",
   "packages/cli/src/checkpoint.mjs",
-  "packages/cli/src/verify.mjs"
+  "packages/cli/src/verify.mjs",
+  "packages/cli/src/commands/validate-repo.mjs",
+  "packages/cli/test/db.test.mjs",
+  "packages/cli/test/logs.test.mjs",
+  "packages/cli/test/visual-diff.test.mjs",
+  "packages/cli/test/checkpoint.test.mjs",
+  "packages/cli/test/verify.test.mjs"
 ];
 
 for (const relative of required) {
@@ -36,6 +45,27 @@ for (const relative of required) {
   } catch {
     throw new Error(`Repository contract: missing required file: ${relative}`);
   }
+}
+
+async function findPythonFiles(directory, relative = "") {
+  const entries = await readdir(directory, { withFileTypes: true });
+  const found = [];
+  for (const entry of entries) {
+    if ([".git", "node_modules", "Library", "Temp", "Obj"].includes(entry.name)) continue;
+    const childRelative = path.join(relative, entry.name);
+    const absolute = path.join(directory, entry.name);
+    if (entry.isDirectory()) {
+      found.push(...await findPythonFiles(absolute, childRelative));
+    } else if (entry.isFile() && entry.name.endsWith(".py")) {
+      found.push(childRelative.replaceAll(path.sep, "/"));
+    }
+  }
+  return found;
+}
+
+const pythonFiles = await findPythonFiles(repoRoot);
+if (pythonFiles.length) {
+  throw new Error(`Python tools remain after migration: ${pythonFiles.join(", ")}`);
 }
 
 const projectVersion = await readFile(path.join(repoRoot, "ProjectSettings/ProjectVersion.txt"), "utf8");
