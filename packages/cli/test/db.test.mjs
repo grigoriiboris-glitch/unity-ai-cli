@@ -75,7 +75,7 @@ test("summary output is bounded", (t) => {
     broker.ingest({
       severity: "error",
       category: "exception",
-      message: `Different failure token-${String(index).padStart(2, "0")}`,
+      message: `Different failure token-${String.fromCharCode(65 + Math.floor(index / 26))}${String.fromCharCode(65 + (index % 26))}`,
       exception_type: "Exception"
     });
   }
