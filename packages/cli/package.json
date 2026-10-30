@@ -11,7 +11,7 @@
     "test": "node --test",
     "validate": "node ./src/commands/validate-repo.mjs",
     "verify": "node ./src/index.mjs verify",
-    "lint": "node --check ./src/index.mjs && node --check ./src/db.mjs && node --check ./src/logs.mjs && node --check ./src/visual-diff.mjs && node --check ./src/checkpoint.mjs && node --check ./src/verify.mjs"
+    "lint": "node --check ./src/index.mjs && node --check ./src/db.mjs && node --check ./src/logs.mjs && node --check ./src/visual-diff.mjs && node --check ./src/checkpoint.mjs && node --check ./src/verify.mjs && node --check ./src/commands/validate-repo.mjs"
   },
   "engines": {
     "node": ">=24.15.0"
