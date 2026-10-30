@@ -45,7 +45,7 @@ export function findTopUserFrame(stacktrace = "") {
     const match = FRAME_RE.exec(rawLine);
     let frame = (match?.[1] ?? rawLine.trim()).trim();
     if (frame.includes(" in ")) frame = frame.slice(0, frame.lastIndexOf(" in ")).trim();
-    frame = frame.replace(/\s*\([^)]*\)$/, "").trim();
+    frame = frame.replace(/^at\s+/, "").replace(/\s*\([^)]*\)$/, "").trim();
     if (frame && !ignored.some((prefix) => frame.startsWith(prefix))) return frame;
   }
   return "";
