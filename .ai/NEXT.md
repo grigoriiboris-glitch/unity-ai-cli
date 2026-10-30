@@ -1,7 +1,8 @@
 # Next
 
-1. Configure UNITY_CI_ENABLED=true and Unity credentials so compile/EditMode/PlayMode execute in GitHub Actions.
-2. Implement Unity Editor Game View / Scene View capture adapter using the existing bounded Visual Evidence API.
-3. Persist evidence artifacts under .ai/artifacts/<task_id>/ and return artifact IDs only to AI-facing APIs.
-4. Add visual escalation policy: semantic/runtime -> one screenshot -> Game+Scene -> selected temporal frames.
-5. Add Codex/MCP integration and context recovery from CHECKPOINT + Git.
+1. Run Node.js 24.15+ validation, syntax checks and all CLI regression tests.
+2. Confirm the Editor assembly compiles in Unity 6000.3.23f1; fix API/version errors if any.
+3. Exercise the Coplay menu invocation path in an open Unity Editor: save state -> selected-object report -> unity-ai verify.
+4. Test checkpoint refusal for missing/stale/dirty save state and successful local tag creation after a valid save.
+5. Keep Unity compile/EditMode/PlayMode CI opt-in until Unity license secrets are configured.
+6. Review PR diff, confirm no Python files or duplicated MCP transport remain, then merge only with green GitHub Actions.
