@@ -19,6 +19,17 @@ test("groups repeated exception stack traces and reports occurrence count", () =
   assert.equal(result[0].top_user_frame.startsWith("PlayerController.Update"), true);
 });
 
+test("parses Unity C# compiler errors with the full Assets path", () => {
+  const result = collectErrorBlocks(
+    "Assets/Scripts/PlayerController.cs(42,7): error CS0103: The name 'health' does not exist in the current context"
+  );
+  assert.equal(result.length, 1);
+  assert.equal(result[0].category, "compile");
+  assert.equal(result[0].file, "Assets/Scripts/PlayerController.cs");
+  assert.equal(result[0].line, 42);
+  assert.equal(result[0].exception_type, "CS0103");
+});
+
 test("adds a bounded source excerpt around the failing line", async (t) => {
   const root = await mkdtemp(path.join(os.tmpdir(), "unity-ai-source-"));
   t.after(() => rm(root, { recursive: true, force: true }));
