@@ -1,4 +1,4 @@
-import { readFile, stat } from "node:fs/promises";
+import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { defaultEditorLogPath, summarizeEditorLog } from "./logs.mjs";
 
@@ -41,20 +41,54 @@ export async function verifyProject(repositoryRoot, {
     if (!Number.isFinite(generatedAt) || Date.now() - generatedAt > maxAgeMs || generatedAt > Date.now() + 60_000) {
       throw new Error(`Unity verification report is stale (limit ${maxAgeMinutes} minutes). Run the verification menu item again through Unity MCP.`);
     }
-    const suiteMap = report.suites ?? {};
-    const missingSuites = requestedUnitySuites.filter((suite) => suiteMap[suite] === undefined && report.checkedSuites?.includes?.(suite) !== true);
+
+    const checkedSuites = report.checkedSuites ?? report.CheckedSuites ?? [];
+    const suiteDetails = {};
+    const missingSuites = [];
+    const blockedSuites = [];
+    const failedSuites = [];
+    for (const suite of requestedUnitySuites) {
+      const details = report[suite] ?? report.suites?.[suite] ?? report.Suites?.[suite];
+      if (!details && !checkedSuites.includes(suite)) {
+        missingSuites.push(suite);
+        continue;
+      }
+      if (details) {
+        suiteDetails[suite] = details;
+        const status = String(details.status ?? details.Status ?? "").toLowerCase();
+        if (["blocked", "requires_play_mode", "skipped"].includes(status)) blockedSuites.push(suite);
+        if (status === "failed") failedSuites.push(suite);
+      }
+    }
+
     const anomalies = report.anomalies ?? report.Anomalies ?? [];
-    const errors = anomalies.filter((item) => String(item.severity ?? "error").toLowerCase() === "error");
+    const errors = anomalies.filter((item) =>
+      String(item.severity ?? item.Severity ?? "error").toLowerCase() === "error"
+    );
     result.checks.unity = {
-      status: report.status,
-      generatedAt: report.generatedAt ?? report.generated_at,
-      checkedSuites: report.checkedSuites ?? Object.keys(suiteMap),
+      status: report.status ?? report.Status,
+      generatedAt: report.generatedAt ?? report.generated_at ?? report.GeneratedAt,
+      checkedSuites,
+      requestedSuites: requestedUnitySuites,
+      suiteDetails,
       missingSuites,
+      blockedSuites,
+      failedSuites,
       anomalyCount: anomalies.length,
       errors,
-      skipped: report.skipped ?? []
+      skipped: report.skipped ?? report.Skipped ?? []
     };
-    if (report.status !== "passed" || missingSuites.length || errors.length) result.status = "failed";
+
+    if (
+      report.status === "failed" ||
+      report.Status === "failed" ||
+      missingSuites.length ||
+      failedSuites.length ||
+      blockedSuites.length ||
+      errors.length
+    ) {
+      result.status = "failed";
+    }
   }
 
   return result;
