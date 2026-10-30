@@ -9,7 +9,11 @@ import { createCheckpoint } from "../src/checkpoint.mjs";
 async function makeGitRepo(t) {
   const root = await mkdtemp(path.join(os.tmpdir(), "unity-ai-checkpoint-"));
   t.after(() => rm(root, { recursive: true, force: true }));
-  const git = (...args) => execFileSync("git", args, { cwd: root, stdio: "ignore" });
+  const git = (...args) => execFileSync("git", args, {
+    cwd: root,
+    encoding: "utf8",
+    stdio: ["ignore", "pipe", "pipe"]
+  });
   git("init", "-q");
   git("config", "user.name", "Unity AI Tests");
   git("config", "user.email", "unity-ai-tests@example.invalid");
@@ -55,6 +59,6 @@ test("checkpoint commits saved files and creates an annotated local tag", async 
   const result = await createCheckpoint(root, "before-ui-refactor");
   assert.equal(result.status, "ok");
   assert.equal(result.commitCreated, true);
-  assert.equal(git("tag", "--list", result.tag).toString().trim(), result.tag);
-  assert.equal(git("status", "--porcelain").toString().trim(), "");
+  assert.equal(git("tag", "--list", result.tag).trim(), result.tag);
+  assert.equal(git("status", "--porcelain").trim(), "");
 });
