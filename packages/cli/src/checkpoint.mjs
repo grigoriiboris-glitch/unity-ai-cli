@@ -26,7 +26,7 @@ export async function readEditorSaveState(repositoryRoot, statePath = ".ai/artif
       { cause: error }
     );
   }
-  if (state.status !== "saved" || state.scenesSaved !== true || state.assetsSaved !== true || Number(state.unsavedSceneCount ?? 0) > 0) {
+  if (state.status !== "saved" || state.scenesSaved !== true || state.assetsSaved !== true || state.prefabStageSaved === false || Number(state.unsavedSceneCount ?? 0) > 0) {
     throw new Error("Checkpoint refused: Unity reports unsaved scenes or assets. Save through the existing Unity MCP and retry.");
   }
   const savedAt = Date.parse(state.savedAt ?? "");
