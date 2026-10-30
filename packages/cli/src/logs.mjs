@@ -110,13 +110,16 @@ export async function readSourceSnippet(repositoryRoot, fileName, lineNumber, ra
 export function deduplicateBlocks(blocks) {
   const grouped = new Map();
   for (const block of blocks) {
-    const parsed = parseBlock(block);
+    const lines = Array.isArray(block) ? block : block.lines;
+    const blockIndex = Array.isArray(block) ? 0 : block.index;
+    if (!Array.isArray(lines) || lines.length === 0) continue;
+    const parsed = parseBlock(lines);
     const existing = grouped.get(parsed.fingerprint);
     if (existing) {
       existing.count += 1;
-      existing.last_seen_index = block.index;
+      existing.last_seen_index = blockIndex;
     } else {
-      grouped.set(parsed.fingerprint, { ...parsed, count: 1, first_seen_index: block.index, last_seen_index: block.index });
+      grouped.set(parsed.fingerprint, { ...parsed, count: 1, first_seen_index: blockIndex, last_seen_index: blockIndex });
     }
   }
   return [...grouped.values()].sort((a, b) => b.count - a.count || a.first_seen_index - b.first_seen_index);
