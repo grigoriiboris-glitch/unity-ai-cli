@@ -23,7 +23,7 @@ const required = [
   "ProjectSettings/ProjectVersion.txt",
   "Packages/com.grigoriiboris-glitch.ai-verification/package.json",
   "Packages/com.grigoriiboris-glitch.ai-verification/Editor/UnityAI.Verification.Editor.asmdef",
-  "Packages/com.grigoriiboris-glitch.ai-verification/Editor/VerificationReportExporter.cs",
+  "Packages/com.grigoriiboris-glitch.ai-verification/Editor/VerificationReportExporter.cs",\n  "Packages/com.grigoriiboris-glitch.ai-verification/Editor/VerificationSaveStateInvalidator.cs",
   "packages/cli/package.json",
   "packages/cli/src/index.mjs",
   "packages/cli/src/db.mjs",
