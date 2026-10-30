@@ -69,7 +69,7 @@ async function main(argv) {
 
   if (command === "validate") {
     const { spawnSync } = await import("node:child_process");
-    const script = path.join(repoRoot, "src/commands/validate-repo.mjs");
+    const script = path.join(path.dirname(fileURLToPath(import.meta.url)), "commands/validate-repo.mjs");
     const result = spawnSync(process.execPath, [script], { cwd: repoRoot, encoding: "utf8" });
     if (result.stdout) process.stdout.write(result.stdout);
     if (result.stderr) process.stderr.write(result.stderr);
