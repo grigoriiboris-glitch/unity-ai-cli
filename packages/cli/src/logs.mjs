@@ -4,7 +4,7 @@ import { createHash } from "node:crypto";
 import { extractSource, findTopUserFrame, normalizeMessage } from "./db.mjs";
 
 const EXCEPTION_RE = /^([A-Za-z_][A-Za-z0-9_.]*(?:Exception|Error))(?::\s*(.*))?$/;
-const COMPILE_ERROR_RE = /^(?:\s*)?(?:Assets\/|Packages\/|Library\/PackageCache\/)?(.+?\.cs)\((\d+),(\d+)\):\s*error\s+(CS\d+)\s*:\s*(.*)$/i;
+const COMPILE_ERROR_RE = /^\s*(.+?\.cs)\((\d+),(\d+)\):\s*error\s+(CS\d+)\s*:\s*(.*)$/i;
 const ERROR_RE = /^(?:Error|ERROR|error):\s*(.+)$/;
 const DEFAULT_TAIL_BYTES = 2 * 1024 * 1024;
 
