@@ -1,0 +1,23 @@
+{
+  "name": "@unity-ai/cli",
+  "version": "0.2.0",
+  "private": true,
+  "description": "Node.js verification and guardrails CLI for Pi.dev and Unity MCP workflows",
+  "type": "module",
+  "bin": {
+    "unity-ai": "./src/index.mjs"
+  },
+  "scripts": {
+    "test": "node --test",
+    "validate": "node ./src/commands/validate-repo.mjs",
+    "verify": "node ./src/index.mjs verify",
+    "lint": "node --check ./src/index.mjs && node --check ./src/db.mjs && node --check ./src/logs.mjs && node --check ./src/visual-diff.mjs && node --check ./src/checkpoint.mjs && node --check ./src/verify.mjs"
+  },
+  "engines": {
+    "node": ">=24.15.0"
+  },
+  "dependencies": {
+    "pixelmatch": "8.0.0",
+    "sharp": "0.35.5"
+  }
+}
