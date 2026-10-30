@@ -25,6 +25,7 @@ namespace UnityAI.Verification.Editor
         public string unityVersion;
         public bool scenesSaved;
         public bool assetsSaved;
+        public bool prefabStageSaved;
         public int unsavedSceneCount;
         public List<EditorSceneSaveEntry> scenes = new();
         public string message;
@@ -89,7 +90,8 @@ namespace UnityAI.Verification.Editor
                 savedAt = DateTime.UtcNow.ToString("o"),
                 unityVersion = Application.unityVersion,
                 scenesSaved = false,
-                assetsSaved = false
+                assetsSaved = false,
+                prefabStageSaved = true
             };
 
             for (var i = 0; i < SceneManager.sceneCount; i++)
