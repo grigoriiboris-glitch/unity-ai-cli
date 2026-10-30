@@ -8,7 +8,7 @@ from pathlib import Path
 from PIL import Image
 
 
-ROOT = Path(__file__).resolve().parents[2]
+ROOT = Path(__file__).resolve().parents[3]
 COMPARE = ROOT / "tools" / "visual-evidence" / "compare.py"
 
 
