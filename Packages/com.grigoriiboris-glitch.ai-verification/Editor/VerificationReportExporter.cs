@@ -245,7 +245,7 @@ namespace UnityAI.Verification.Editor
                         runId));
                 }
 
-                if (camera != null)
+                    if (camera != null)
                 {
                     visibilityTargets++;
                     Merge(report.anomalies, VisibilityVerifier.Verify(
@@ -279,10 +279,25 @@ namespace UnityAI.Verification.Editor
             }
 
             report.visibility.checkedObjects = visibilityTargets;
-            report.visibility.status = visibilityTargets == 0 ? "not_applicable" : "passed";
-            report.visibility.message = visibilityTargets == 0
-                ? "Visibility checks require Play Mode and an active Main Camera."
-                : "Visibility checks completed against Camera.main.";
+            if (!Application.isPlaying)
+            {
+                report.visibility.status = "requires_play_mode";
+                report.visibility.message = "Enter Play Mode and ensure an active Main Camera before checking visibility.";
+                report.skipped.Add("Visibility checks: Play Mode and Camera.main are required.");
+            }
+            else if (camera == null)
+            {
+                report.visibility.status = "blocked";
+                report.visibility.message = "Camera.main is missing. Tag the active Game Camera as MainCamera and rerun verification.";
+                report.skipped.Add("Visibility checks: Camera.main was not found.");
+            }
+            else
+            {
+                report.visibility.status = visibilityTargets == 0 ? "not_applicable" : "passed";
+                report.visibility.message = visibilityTargets == 0
+                    ? "No selected GameObjects were available for visibility checks."
+                    : "Visibility checks completed against Camera.main.";
+            }
 
             var hasErrors = false;
             foreach (var anomaly in report.anomalies)
@@ -296,7 +311,10 @@ namespace UnityAI.Verification.Editor
 
             if (hasErrors)
                 report.status = "failed";
-            else if (report.ui.status == "requires_play_mode")
+            else if (
+                report.ui.status == "requires_play_mode" ||
+                report.visibility.status == "requires_play_mode" ||
+                report.visibility.status == "blocked")
                 report.status = "blocked";
 
             return WriteReport(report);
