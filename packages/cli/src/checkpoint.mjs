@@ -55,7 +55,7 @@ export async function createCheckpoint(repositoryRoot, name, {
   let commitCreated = false;
   if (hasChanges) {
     const message = commitMessage || `checkpoint: ${name}`;
-    git(["-c", "core.hooksPath=/dev/null", "commit", "-m", message], root);
+    git(["commit", "-m", message], root);
     commitCreated = true;
   }
   const commit = git(["rev-parse", "HEAD"], root);
