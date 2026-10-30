@@ -127,7 +127,12 @@ namespace UnityAI.Verification.Editor
                 var prefabStage = PrefabStageUtility.GetCurrentPrefabStage();
                 if (prefabStage != null && prefabStage.prefabContentsRoot != null)
                 {
-                    PrefabUtility.SavePrefabAsset(prefabStage.prefabContentsRoot);
+                    var savedPrefab = PrefabUtility.SavePrefabAsset(
+                        prefabStage.prefabContentsRoot,
+                        out var prefabSavedSuccessfully);
+                    state.prefabStageSaved = prefabSavedSuccessfully && savedPrefab != null;
+                    if (!state.prefabStageSaved)
+                        throw new InvalidOperationException("Unity could not save the open Prefab Stage.");
                     AssetDatabase.SaveAssets();
                 }
 
@@ -143,7 +148,7 @@ namespace UnityAI.Verification.Editor
 
                 state.unsavedSceneCount = unsaved;
                 state.scenesSaved = unsaved == 0;
-                state.status = state.scenesSaved && state.assetsSaved ? "saved" : "blocked";
+                state.status = state.scenesSaved && state.assetsSaved && state.prefabStageSaved ? "saved" : "blocked";
                 state.savedAt = DateTime.UtcNow.ToString("o");
                 state.message = state.status == "saved"
                     ? "All open scenes and assets were saved."
